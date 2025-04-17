@@ -1,12 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { PrismaService } from './database/prisma.service';
+import { randomUUID } from 'node:crypto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async create() {
+    await this.prisma.members.create({
+      data: {
+        id: randomUUID(),
+        name: 'teste',
+        function: 'testa',
+      },
+    });
   }
 }
